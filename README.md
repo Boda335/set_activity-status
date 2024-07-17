@@ -7,6 +7,8 @@ This is a Discord bot built using `discord.py` that can change its status and ac
 - Change bot status to Online, Idle, Do Not Disturb, or Invisible.
 - Change bot activity to Playing, Watching, Listening, or Streaming.
 - Switch between two activities at a set interval.
+
+
 ##Configure
 
 config.json:
