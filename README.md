@@ -17,5 +17,19 @@ Use the `/set_status` command to change the bot's status.
 **Command Usage:**
 /set_status status:<Online|Idle|Do Not Disturb|Invisible>
 
+### `/set_activity`
+
+Change the bot's activity. The bot can switch between two activities at a specified interval.
+
+**Options:**
+- `activity_type`: Choose the type of activity (Playing, Watching, Listening, Streaming).
+- `activity_text1`: Enter the text for the first activity.
+- `activity_text2` (optional): Enter the text for the second activity.
+- `interval` (optional): Set the interval in seconds for switching between activities.
+
+Example usage:
+
+/set_activity activity_type
+activity_text1:"Hello" activity_text2:"I am Groot" interval:30
 
 [Support Server](https://discord.gg/HAyAe387Tk)
