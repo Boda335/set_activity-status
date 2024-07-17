@@ -1,24 +1,30 @@
+import json
 import discord
+from discord import app_commands
 from discord.ext import commands, tasks
+
+# Load the owner ID from the config file
+with open('config.json') as f:
+    config = json.load(f)
+    owner_id = config['owner_id']
 
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix='!', intents=intents)
 activity1 = discord.Game(name="Hello")
 activity2 = discord.Game(name="I am Groot")
-switch_interval = 30
+switch_interval = 5
 current_activity = 1
 current_status = discord.Status.online
-
-# Define the user ID that can execute restricted commands
-allowed_user_id = YOUR_ALLOWED_USER_ID_HERE
-
-def check_author(ctx):
-    return ctx.author.id == allowed_user_id
 
 @bot.event
 async def on_ready():
     print(f'Logged in as {bot.user.name}')
     await bot.change_presence(status=current_status, activity=activity1)
+    try:
+        synced = await bot.tree.sync()
+        print(f'Synced {len(synced)} command(s)')
+    except Exception as e:
+        print(e)
     switch_activity.start()
 
 @tasks.loop(seconds=switch_interval)
@@ -31,8 +37,16 @@ async def switch_activity():
         await bot.change_presence(activity=activity2, status=current_status)
         current_activity = 1
 
-# Command to change bot's status
+def bot_owner():
+    async def predicate(interaction: discord.Interaction) -> bool:
+        if str(interaction.user.id) != owner_id:
+            await interaction.response.send_message("You are not the bot owner.", ephemeral=True)
+            return False
+        return True
+    return app_commands.check(predicate)
+
 @bot.tree.command(name="set_status", description="Change the bot's status")
+@bot_owner()
 @app_commands.describe(status="Choose a new status for the bot")
 @app_commands.choices(status=[
     app_commands.Choice(name="Online", value="online"),
@@ -40,7 +54,6 @@ async def switch_activity():
     app_commands.Choice(name="Do Not Disturb", value="dnd"),
     app_commands.Choice(name="Invisible", value="invisible"),
 ])
-@commands.check(check_author)
 async def set_status(interaction: discord.Interaction, status: app_commands.Choice[str]):
     global current_status
     if status.value == 'online':
@@ -54,15 +67,25 @@ async def set_status(interaction: discord.Interaction, status: app_commands.Choi
     await bot.change_presence(status=current_status, activity=activity1 if current_activity == 1 else activity2)
     await interaction.response.send_message(f'Status changed to {status.name}.', ephemeral=True)
 
-# Command to change bot's activity
+@set_status.error
+async def set_status_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("You are not authorized to use this command.", hidden=True)
+
 @bot.tree.command(name="set_activity", description="Change the bot's activity")
+@bot_owner()
 @app_commands.describe(
     activity_type="Choose a type of activity",
     activity_text1="Enter the first activity text",
     activity_text2="Enter the second activity text (optional)",
     interval="Enter the switch interval in seconds (optional)"
 )
-@commands.check(check_author)
+@app_commands.choices(activity_type=[
+    app_commands.Choice(name="Playing", value="playing"),
+    app_commands.Choice(name="Watching", value="watching"),
+    app_commands.Choice(name="Listening", value="listening"),
+    app_commands.Choice(name="Streaming", value="streaming"),
+])
 async def set_activity(
     interaction: discord.Interaction,
     activity_type: app_commands.Choice[str],
@@ -101,4 +124,9 @@ async def set_activity(
     await interaction.response.send_message(message, ephemeral=True)
     switch_activity.restart()
 
-bot.run('YOUR_BOT_TOKEN')
+@set_activity.error
+async def set_activity_error(ctx, error):
+    if isinstance(error, commands.CheckFailure):
+        await ctx.send("You are not authorized to use this command.", hidden=True)
+
+bot.run('TOKEN')
