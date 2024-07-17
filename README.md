@@ -42,6 +42,6 @@ Change the bot's activity. The bot can switch between two activities at a specif
 Example usage:
 
 /set_activity activity_type
-activity_text1:"Hello" activity_text2:"I am Groot" interval:30
+activity_text1:"Hello" activity_text2:"I am Groot" interval:5
 
 [Support Server](https://discord.gg/HAyAe387Tk)
