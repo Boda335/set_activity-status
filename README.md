@@ -9,7 +9,7 @@ This is a Discord bot built using `discord.py` that can change its status and ac
 - Switch between two activities at a set interval.
 
 
-##Configure
+## Configure
 
 config.json:
 `
