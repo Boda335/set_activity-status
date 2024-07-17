@@ -43,4 +43,4 @@ Example usage:
 /set_activity activity_type
 activity_text1:"Hello" activity_text2:"I am Groot" interval:5
 
-[Support Server](https://discord.gg/HAyAe387Tk)
+Support Server[THE EVOKERS](https://discord.gg/HAyAe387Tk)
