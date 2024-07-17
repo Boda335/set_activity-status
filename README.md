@@ -14,8 +14,8 @@ This is a Discord bot built using `discord.py` that can change its status and ac
 config.json:
 `
 {
-    "token": "YOUR_DISCORD_BOT_TOKEN_HERE",\n
-    "owner_id": "YOUR_DISCORD_OWNER_ID_HERE"
+    `"token": "YOUR_DISCORD_BOT_TOKEN_HERE",`
+    `"owner_id": "YOUR_DISCORD_OWNER_ID_HERE"`
 }
 `
 ## Commands
