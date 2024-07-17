@@ -6,6 +6,7 @@ from discord.ext import commands, tasks
 # Load the owner ID from the config file
 with open('config.json') as f:
     config = json.load(f)
+    TOKEN = config['token']
     owner_id = config['owner_id']
 
 intents = discord.Intents.default()
@@ -129,4 +130,4 @@ async def set_activity_error(ctx, error):
     if isinstance(error, commands.CheckFailure):
         await ctx.send("You are not authorized to use this command.", hidden=True)
 
-bot.run('TOKEN')
+bot.run(TOKEN)
