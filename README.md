@@ -17,7 +17,9 @@ Use the `/set_status` command to change the bot's status.
 **Command Usage:**
 /set_status status:<Online|Idle|Do Not Disturb|Invisible>
 
-### `/set_activity`
+### set_activity
+
+Use the `/set_activity` command to change the bot's activity
 
 Change the bot's activity. The bot can switch between two activities at a specified interval.
 
